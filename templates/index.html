@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShoeShack</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .product-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .product-card .card-body {
+            padding: 20px;
+        }
+        .product-card .btn {
+            width: 100%;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 80%;
+        }
+        .search-button {
+            width: 10%;
+        }
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #dbe3eb;
+            padding-top: 20px;
+            padding-left: 10px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #aaaaaa;
+        }
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .sidebar form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h3 style="font-size: x-large;">Filter by Color</h3>
+        <form action="/filter_by_colour" method="post">
+            <label><input type="radio" name="color" value="RED"> Red</label>
+            <label><input type="radio" name="color" value="BLUE"> Blue</label>
+            <label><input type="radio" name="color" value="WHITE"> White</label>
+            <label><input type="radio" name="color" value="BLACK"> Black</label>
+            <label><input type="radio" name="color" value="PASTEL"> Pastel</label>
+            <button type="submit" class="btn btn-primary mt-3">Apply Filter</button>
+        </form>
+    </div>
+    <div class="content">
+        <div class="container">
+            <h1 class="my-4">ShoeShack</h1>
+            <form action="/search" method="post" class="form-inline search-form">
+                <input type="text" name="search_query" class="form-control mr-2 search-input" placeholder="Search by product name" style="width: 85%;">
+                <button type="submit" class="btn btn-primary search-button">Search</button>
+            </form>
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-4">
+                    <div class="card product-card">
+                        <img class="card-img-top" src="{{ product.image_url }}" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">Brand: {{ product.brand }}</p>
+                            <p class="card-text">Colour: {{ product.colour }}</p>
+                            <p class="card-text">Price: ${{ product.price }}</p>
+                            <form action="/delete_product" method="post">
+                                <input type="hidden" name="product_id" value="{{ product._id }}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <a href="/add_product" class="btn btn-primary">Add Shoes</a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/update_product_page" class="btn btn-primary">Update Shoes</a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/summary" class="btn btn-primary">Summary</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
